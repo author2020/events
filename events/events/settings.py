@@ -64,16 +64,24 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('POSTGRES_DB', 'events_db'),
-#         'USER': os.environ.get('POSTGRES_USER', 'events_user'),
-#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'events_password'),
-#         'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
-#         'PORT': os.environ.get('POSTGRES_PORT', 5432),
-#     },
-# }
+DATABASES = {
+    'production': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'events_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'events_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'events_password'),
+        'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
+    },
+    'debug_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'debug_db.sqlite3',
+    }
+}
+
+DATABASES['default'] = DATABASES['debug_db'] if DEBUG else DATABASES['production']
+
+AUTH_USER_MODEL = 'users.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
