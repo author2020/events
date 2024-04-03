@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'events.urls'
+ROOT_URLCONF = 'event_app.urls'
 
 TEMPLATES = [
     {
@@ -59,7 +59,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'events.wsgi.application'
+WSGI_APPLICATION = 'event_app.wsgi.application'
 
 DATABASES = {
     'production': {
