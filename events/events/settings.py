@@ -13,6 +13,9 @@ DEBUG = os.getenv('DEBUG', default='False').lower() == 'true'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='*').split()
 
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', default='http://*').split()
+CSRF_TRUSTED_ORIGINS.extend(os.getenv('CSRF_TRUSTED_ORIGINS', default='https://*').split())
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -25,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users.apps.UsersConfig',
     'api.apps.ApiConfig',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -58,22 +62,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'events.wsgi.application'
 
 DATABASES = {
-    'default': {
+    'production': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'events_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'events_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'events_password'),
+        'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
+    },
+    'debug_db': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'debug_db.sqlite3',
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('POSTGRES_DB', 'events_db'),
-#         'USER': os.environ.get('POSTGRES_USER', 'events_user'),
-#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'events_password'),
-#         'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
-#         'PORT': os.environ.get('POSTGRES_PORT', 5432),
-#     },
-# }
+DATABASES['default'] = DATABASES['debug_db'] if DEBUG else DATABASES['production']
+
+AUTH_USER_MODEL = 'users.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -89,6 +94,26 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    # 'PERMISSIONS': {
+    #     'user': ['rest_framework.permissions.IsAuthenticated'],
+    # },
+    'SERIALIZERS': {
+        'user': 'users.serializers.CustomUserSerializer',
+        'current_user': 'users.serializers.CustomUserSerializer',
+    },
+}
 
 LANGUAGE_CODE = 'ru-ru'
 
