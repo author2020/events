@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'api.apps.ApiConfig',
     'djoser',
+    'events.apps.EventsConfig',
 ]
 
 MIDDLEWARE = [
