@@ -1,0 +1,28 @@
+FROM python:3.11-slim
+
+ENV APP_HOME=/app
+
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install gettext libpq-dev gcc -y
+
+RUN pip install --upgrade pip
+
+WORKDIR $APP_HOME
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE event_app.settings
+
+RUN addgroup --system backend_user \
+    && adduser --system --ingroup backend_user backend_user
+
+RUN  mkdir staticfiles media \
+    && chown -R backend_user:backend_user $APP_HOME
+
+USER backend_user
+
+RUN  sed -i 's/\r$//' ./entrypoint.sh && chmod +x ./entrypoint.sh
+ENTRYPOINT  ["./entrypoint.sh"]
