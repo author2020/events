@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'mailings.apps.MailingsConfig',
     'djoser',
+    'events.apps.EventsConfig',
 ]
 
 MIDDLEWARE = [
