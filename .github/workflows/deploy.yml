@@ -59,7 +59,7 @@ jobs:
 
             echo CELERY_BROKER=${{ vars.CELERY_BROKER }} >> .env
 
-            cd /event_app/infra
+            cd /infra
             sudo docker compose down
             sudo docker image rm ${{ vars.DOCKER_USERNAME }}/event
             sudo docker compose pull
