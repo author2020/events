@@ -1,7 +1,5 @@
-import pytz
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils import timezone
 
 User = get_user_model()
 
@@ -51,8 +49,6 @@ class Event(models.Model):
         verbose_name='Описание мероприятия'
     )
     datetime = models.DateTimeField(
-        default=timezone.localtime(timezone.now(
-        ), pytz.timezone('Europe/Moscow')),
         verbose_name='Дата и время начала проведения мероприятия'
     )
     format = models.CharField(
