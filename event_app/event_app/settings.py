@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'mailings.apps.MailingsConfig',
     'djoser',
     'events.apps.EventsConfig',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
