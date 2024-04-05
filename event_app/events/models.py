@@ -25,10 +25,6 @@ FORMAT_CHOICES = [
 class Event(models.Model):
     '''Модель мероприятия.'''
 
-    id = models.AutoField(
-        primary_key=True,
-        verbose_name='ID мероприятия'
-    )
     title = models.CharField(
         max_length=100,
         verbose_name='Название мероприятия'
@@ -54,8 +50,6 @@ class Event(models.Model):
     description = models.TextField(
         verbose_name='Описание мероприятия'
     )
-    date = models.DateField()
-    time_msk = models.TimeField()
     datetime = models.DateTimeField(
         default=timezone.localtime(timezone.now(
         ), pytz.timezone('Europe/Moscow')),
@@ -77,13 +71,15 @@ class Event(models.Model):
         max_length=200,
         verbose_name='Адрес места проведения мероприятия'
     )
-    location_coordinates = models.DecimalField(
-       verbose_name='Координаты места проведения мероприятия' 
+    location_coordinates = models.CharField(
+        max_length=100,
+        verbose_name='Координаты места проведения мероприятия'
     )
     image = models.ImageField(
         verbose_name='Обложка мероприятия'
     )
     published_date = models.DateTimeField(
+        auto_now_add=True,
         verbose_name='Дата публикации'
     )
     host_photo = models.ImageField(
@@ -115,12 +111,12 @@ class Event(models.Model):
         null=True,
         verbose_name='Ссылка на запись мероприятия'
     )
-    recording_link_start_date = models.DateField(
+    recording_link_start_date = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name='Начало срока ссылки записи'
     )
-    recording_link_end_date = models.DateField(
+    recording_link_end_date = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name='Конец срока ссылки записи'
@@ -131,12 +127,12 @@ class Event(models.Model):
         null=True,
         verbose_name='Ссылка на онлайн-трансляцию мероприятия'
     )
-    online_stream_link_start_date = models.DateField(
+    online_stream_link_start_date = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name='Начало срока ссылки трансляции'
     )
-    online_stream_link_end_date = models.DateField(
+    online_stream_link_end_date = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name='Конец срока ссылки трансляции'
