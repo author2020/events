@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users.apps.UsersConfig',
     'api.apps.ApiConfig',
+    'mailings.apps.MailingsConfig',
     'djoser',
     'events.apps.EventsConfig',
 ]
@@ -106,15 +107,42 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': 'reset-password-confirmation/?uid={uid}&token={token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'EMAIL': {
+        'activation': 'core.email_djoser.ActivationEmail',
+        'confirmation': 'core.email_djoser.ConfirmationEmail',
+        'password_reset': 'core.email_djoser.PasswordResetEmail',
+        'password_changed_confirmation': 'core.email_djoser.PasswordConfirmationEmail',
+    },
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'ACTIVATION_URL': 'activate/?uid={uid}&token={token}',
+    'SEND_ACTIVATION_EMAIL': True,
     'LOGIN_FIELD': 'email',
     # 'PERMISSIONS': {
     #     'user': ['rest_framework.permissions.IsAuthenticated'],
     # },
     'SERIALIZERS': {
+        # тут нужен сериализатор для активации
+        'activation': 'users.serializers.CustomActivationSerializer',
         'user': 'users.serializers.CustomUserSerializer',
         'current_user': 'users.serializers.CustomUserSerializer',
     },
+    # 'CONSTANTS': {
+    #     'messages': 'api.constants.DjoserMessages',
+    # },
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', default='False').lower() == 'true'
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', default='False').lower() == 'true'
 
 LANGUAGE_CODE = 'ru-ru'
 
@@ -124,6 +152,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_BROKER', 'redis://localhost:6379/0')
+WEEKLY_SUBJECT = os.environ.get('WEEKLY_SUBJECT', 'Еженедельная рассылка Event')
