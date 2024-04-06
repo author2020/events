@@ -9,6 +9,7 @@ from .models import User
 class CustomUserSerializer(UserSerializer):
     email = serializers.EmailField(required=True,
                                    validators=[UniqueValidator(queryset=User.objects.all())])
+    profile_full = serializers.SerializerMethodField()
 
     class Meta(UserSerializer.Meta):
         fields = ('id', 'email', 'first_name', 'last_name',
@@ -18,12 +19,16 @@ class CustomUserSerializer(UserSerializer):
                   'consent_personal_data_date',
                   'consent_vacancy_data_processing',
                   'consent_vacancy_data_date',
-                  'consent_random_coffee')
+                  'consent_random_coffee', 'profile_full')
         extra_kwargs = {'password': {'write_only': True}}
         read_only_fields = ('id', 'role',
                             'consent_personal_data_date',
-                            'consent_vacancy_data_date')
+                            'consent_vacancy_data_date',
+                            'profile_full')
         model = User
+
+    def get_profile_full(self, obj):
+        return obj.profile_full
     
     def update(self, instance, validated_data):
         print('We are here 00')

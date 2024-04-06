@@ -1,6 +1,5 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-# from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin #UserManager
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -23,9 +22,15 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Specialization(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=False, null=False)
+    description = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = _('Направление работы')
+        verbose_name_plural = _('Направления работы')
     
 class User(AbstractBaseUser, PermissionsMixin):
     ADMIN = 'admin'
@@ -41,28 +46,28 @@ class User(AbstractBaseUser, PermissionsMixin):
     MORE_3_YEARS = 'more_3_years'
     MORE_5_YEARS = 'more_5_years'
     OTHER_EXPERIENCE = 'other_experience'
-    experience_choices = ((NO_EXPERIENCE, 'No experience'),
-                          (MORE_1_YEAR, 'More than 1 year'),
-                          (MORE_3_YEARS, 'More than 3 years'),
+    experience_choices = ((NO_EXPERIENCE, 'Нет опыта'),
+                          (MORE_1_YEAR, 'Более 1 года'),
+                          (MORE_3_YEARS, 'Более 3 лет'),
                           (MORE_5_YEARS, 'More than 5 years'),
                           (OTHER_EXPERIENCE, 'Other experience'))
 
-    email = models.EmailField(_('email address'), unique=True, blank=False, null=False)
-    password = models.CharField(_('password'), max_length=128)
-    first_name = models.CharField(_('first name'), max_length=30, blank=True, null=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True, null=True)
-    role = models.CharField(_('role'), max_length=5, choices=ROLE_CHOICES, default=USER)
-    phone = models.CharField(_('phone'), max_length=15, blank=True, null=True)
-    employer = models.CharField(_('employer'), max_length=100, blank=True, null=True)
-    occupation = models.CharField(_('occupation'), max_length=100, blank=True, null=True)
-    experience = models.CharField(_('experience'), max_length=20, choices=experience_choices, default=NO_EXPERIENCE)
-    specialization = models.ForeignKey(Specialization, on_delete=models.SET_NULL, blank=True, null=True)
-    preferred_format = models.CharField(_('preferred format'), max_length=10, choices=event_formats, default=ONLINE)
-    consent_personal_data_processing = models.BooleanField(_('consent of the personal data processing'), default=False)
-    consent_personal_data_date = models.DateTimeField(_('date of the personal data consent'), blank=True, null=True)
-    consent_vacancy_data_processing = models.BooleanField(_('consent of the vacancy data processing'), default=False)
-    consent_vacancy_data_date = models.DateTimeField(_('date of the vacancy data consent'), blank=True, null=True)
-    consent_random_coffee = models.BooleanField(_('consent to participate in random coffee'), default=False)
+    email = models.EmailField(_('Адрес электронной почты'), unique=True, blank=False, null=False)
+    password = models.CharField(_('Пароль'), max_length=128)
+    first_name = models.CharField(_('Имя'), max_length=30, blank=True, null=True)
+    last_name = models.CharField(_('Фамилия'), max_length=150, blank=True, null=True)
+    role = models.CharField(_('Роль'), max_length=5, choices=ROLE_CHOICES, default=USER)
+    phone = models.CharField(_('Телефон'), max_length=15, blank=True, null=True)
+    employer = models.CharField(_('Место работы'), max_length=100, blank=True, null=True)
+    occupation = models.CharField(_('Должность'), max_length=100, blank=True, null=True)
+    experience = models.CharField(_('Опыт работы'), max_length=20, choices=experience_choices, default=NO_EXPERIENCE)
+    specialization = models.ManyToManyField(Specialization, verbose_name=_('Направление'), blank=True)
+    preferred_format = models.CharField(_('Предпочитаемый формат'), max_length=10, choices=event_formats, default=ONLINE)
+    consent_personal_data_processing = models.BooleanField(_('Согласие об обработке персональных данных'), default=False)
+    consent_personal_data_date = models.DateTimeField(_('Дата согласия об обработке персональных данных'), blank=True, null=True)
+    consent_vacancy_data_processing = models.BooleanField(_('Согласие об обработке персональных данных для предложения вакансий'), default=False)
+    consent_vacancy_data_date = models.DateTimeField(_('Дата согласия об обработке персональных данных для предложения вакансий'), blank=True, null=True)
+    consent_random_coffee = models.BooleanField(_('Согласие на участие в Random Coffee'), default=False)
 
     is_staff = models.BooleanField(
         _("staff status"),
@@ -89,4 +94,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_admin(self):
         return self.role == self.ADMIN or self.is_superuser
+    
+    @property
+    def profile_full(self):
+        fields = ['first_name', 'last_name', 'phone', 'employer',
+                  'occupation', 'experience', 'specialization',
+                  'preferred_format', 'consent_personal_data_processing']
+        for field in fields:
+            if not getattr(self, field):
+                return False
+        return True
+    
+    class Meta:
+        verbose_name = _('Пользователь')
+        verbose_name_plural = _('Пользователи')
+
     
