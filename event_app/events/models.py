@@ -3,15 +3,10 @@ from django.db import models
 
 User = get_user_model()
 
-EVENT_STATUS_CHOICES = [
-        ('scheduled', 'Запланировано'),
-        ('in_progress', 'В процессе'),
-        ('finished', 'Завершено'),
-    ]
-
 REGISTRATION_STATUS_CHOICES = [
-        ('open', 'Открыта'),
-        ('closed', 'Закрыта'),
+        ('not_started', 'Регистрация еще не началась'),
+        ('open', 'Идет регистрация'),
+        ('closed', 'Регистрация закрыта'),
     ]
 
 FORMAT_CHOICES = [
@@ -21,19 +16,16 @@ FORMAT_CHOICES = [
 
 
 class Event(models.Model):
-    '''Модель мероприятия.'''
+    '''
+    Модель мероприятия.
+    '''
 
     title = models.CharField(
         max_length=100,
         verbose_name='Название мероприятия'
     )
-    event_status = models.CharField(
-        max_length=20,
-        choices=EVENT_STATUS_CHOICES,
-        verbose_name='Статус мероприятия'
-    )
     registration_status = models.CharField(
-        max_length=10,
+        max_length=20,
         choices=REGISTRATION_STATUS_CHOICES,
         verbose_name='Статус регистрации'
     )
@@ -61,6 +53,7 @@ class Event(models.Model):
     )
     participants = models.ManyToManyField(
         User,
+        blank=True,
         verbose_name='Участники мероприятия'
     )
     location_address = models.CharField(
@@ -72,6 +65,7 @@ class Event(models.Model):
         verbose_name='Координаты места проведения мероприятия'
     )
     image = models.ImageField(
+        upload_to='events/image/',
         verbose_name='Обложка мероприятия'
     )
     published_date = models.DateTimeField(
@@ -79,6 +73,7 @@ class Event(models.Model):
         verbose_name='Дата публикации'
     )
     host_photo = models.ImageField(
+        upload_to='events/hosts/image/',
         verbose_name='Фото ведущего'
     )
     host_full_name = models.CharField(
@@ -135,9 +130,82 @@ class Event(models.Model):
     )
 
     class Meta:
-        ordering = ('-datetime',)
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
 
     def __str__(self):
         return self.title
+
+
+class Subevent(models.Model):
+    '''
+    Модель для части программы на мероприятие.
+    '''
+
+    title = models.CharField(
+        max_length=100,
+        verbose_name='Название части программы'
+    )
+    time = models.TimeField(
+        verbose_name='Время начала проведения части программы'
+    )
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='subevents',
+        verbose_name='Мероприятие, в котором эта часть программы'
+    )
+
+    class Meta:
+        verbose_name = 'Часть программы'
+        verbose_name_plural = 'Части программы'
+
+    def __str__(self):
+        return self.title
+
+
+class Speaker(models.Model):
+    '''
+    Модель для спикера.
+    '''
+    photo = models.ImageField(
+        upload_to='events/speakers/image/',
+        verbose_name='Фото спикера'
+    )
+    first_name = models.CharField(
+        max_length=50,
+        verbose_name='Имя спикера'
+    )
+    last_name = models.CharField(
+        max_length=50,
+        verbose_name='Фамилия спикера'
+    )
+    company = models.CharField(
+        max_length=100,
+        verbose_name='Компания спикера'
+    )
+    contacts = models.CharField(
+        max_length=100,
+        verbose_name='Контакты спикера'
+    )
+    position = models.CharField(
+        max_length=100,
+        verbose_name='Должность спикера'
+    )
+    subevent = models.ForeignKey(
+        Subevent,
+        on_delete=models.CASCADE,
+        related_name='speakers',
+        verbose_name='Часть программы, в которой участвует спикер'
+    )
+
+    class Meta:
+        verbose_name = 'Спикер'
+        verbose_name_plural = 'Спикеры'
+
+    def __str__(self):
+        return self.full_name
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"

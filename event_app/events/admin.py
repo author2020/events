@@ -1,13 +1,12 @@
 from django.contrib import admin
 
-from .models import Event
+from .models import Event, Subevent, Speaker
 
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = (
         'title',
-        'event_status',
         'registration_status',
         'organizer_name',
         'organizer_contacts',
@@ -31,4 +30,25 @@ class EventAdmin(admin.ModelAdmin):
         'online_stream_link',
         'online_stream_link_start_date',
         'online_stream_link_end_date',
+    )
+
+
+@admin.register(Subevent)
+class SubeventAdmin(admin.ModelAdmin):
+    list_display = (
+        'title',
+        'time',
+        'event'
+    )
+
+
+@admin.register(Speaker)
+class SpeakerAdmin(admin.ModelAdmin):
+    list_display = (
+        'photo',
+        'full_name',
+        'company',
+        'contacts',
+        'position',
+        'subevent'
     )
