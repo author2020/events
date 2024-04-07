@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+hosts/
+image/
+speakers/
+
 # C extensions
 *.so
 
