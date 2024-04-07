@@ -3,6 +3,12 @@ from django.db import models
 
 User = get_user_model()
 
+EVENT_STATUS_CHOICES = [
+        ('on_time', 'По расписанию'),
+        ('sheduled', 'Запланировано'),
+        ('cancelled', 'Отменено'),
+    ]
+
 REGISTRATION_STATUS_CHOICES = [
         ('not_started', 'Регистрация еще не началась'),
         ('open', 'Идет регистрация'),
@@ -23,6 +29,11 @@ class Event(models.Model):
     title = models.CharField(
         max_length=100,
         verbose_name='Название мероприятия'
+    )
+    event_status = models.CharField(
+        max_length=20,
+        choices=EVENT_STATUS_CHOICES,
+        verbose_name='Статус мероприятия'
     )
     registration_status = models.CharField(
         max_length=20,
@@ -192,9 +203,8 @@ class Speaker(models.Model):
         max_length=100,
         verbose_name='Должность спикера'
     )
-    subevent = models.ForeignKey(
+    subevent = models.ManyToManyField(
         Subevent,
-        on_delete=models.CASCADE,
         related_name='speakers',
         verbose_name='Часть программы, в которой участвует спикер'
     )

@@ -8,6 +8,7 @@ class SpeakerSerializer(serializers.ModelSerializer):
     '''
     Сериализатор для спикера.
     '''
+    subevent = serializers.StringRelatedField(many=True, read_only=True)
     full_name = serializers.SerializerMethodField()
 
     class Meta:
@@ -22,11 +23,10 @@ class SubeventSerializer(serializers.ModelSerializer):
     '''
     Сериализатор для части программы.
     '''
-    subevents = SpeakerSerializer(many=True, read_only=True)
+    event = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         fields = '__all__'
-        read_only_fields = ('event',)
         model = Subevent
 
 
@@ -34,15 +34,11 @@ class EventSerializer(serializers.ModelSerializer):
     '''
     Сериализатор для мероприятия.
     '''
-    event_status = serializers.SerializerMethodField()
     subevents = SubeventSerializer(many=True, read_only=True)
+    participants = serializers.StringRelatedField(many=True, read_only=True)
+
 
     class Meta:
         model = Event
         fields = '__all__'
 
-    def get_event_status(self, obj):
-        if obj.datetime <= timezone.now():
-            return 'Прошедшие события'
-        else:
-            return 'Скоро'

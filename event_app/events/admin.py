@@ -49,6 +49,5 @@ class SpeakerAdmin(admin.ModelAdmin):
         'full_name',
         'company',
         'contacts',
-        'position',
-        'subevent'
+        'position'
     )

@@ -13,26 +13,9 @@ class EventViewSet(viewsets.ModelViewSet):
     '''
     Представление для работы с мероприятиями.
     '''
+    queryset = Event.objects.all()
     serializer_class = EventSerializer
     pagination_class = CustomPagination
-
-    def get_queryset(self):
-        moscow_tz = pytz.timezone('Europe/Moscow')
-        now = timezone.now().astimezone(moscow_tz)
-
-        if self.action == 'list':
-
-            upcoming_events = Event.objects.filter(datetime__gt=now).order_by('datetime')
-            past_events = Event.objects.filter(datetime__lt=now).order_by('-datetime')
-
-            if self.request.query_params.get('status') == 'upcoming':
-                return upcoming_events
-            elif self.request.query_params.get('status') == 'past':
-                return past_events
-            else:
-                return list(upcoming_events) + list(past_events)
-        else:
-            return Event.objects.all()
 
 
 class SubeventViewSet(viewsets.ModelViewSet):
