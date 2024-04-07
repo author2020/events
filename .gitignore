@@ -3,10 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-hosts/
-image/
-speakers/
-
 # C extensions
 *.so
 
@@ -166,3 +162,7 @@ cython_debug/
 # DB
 *.sqlite3
 staticfiles/
+
+*/hosts/*
+*/image/*
+*/speakers/*
