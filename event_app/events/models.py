@@ -5,7 +5,7 @@ User = get_user_model()
 
 EVENT_STATUS_CHOICES = [
         ('on_time', 'По расписанию'),
-        ('sheduled', 'Запланировано'),
+        ('scheduled', 'Запланировано'),
         ('cancelled', 'Отменено'),
     ]
 
