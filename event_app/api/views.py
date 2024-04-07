@@ -1,7 +1,5 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from django.utils import timezone
-import pytz
 
 from events.models import Event, Speaker
 from api.serializers import (EventSerializer, SubeventSerializer,
