@@ -22,7 +22,7 @@ RUN addgroup --system backend_user \
 COPY entrypoint.sh entrypoint.sh
 COPY ./event_app .
 
-RUN  mkdir staticfiles media \
+RUN  mkdir static media \
     && chown -R backend_user:backend_user $APP_HOME
 
 USER backend_user
