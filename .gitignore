@@ -163,6 +163,4 @@ cython_debug/
 *.sqlite3
 staticfiles/
 
-*/hosts/*
-*/image/*
-*/speakers/*
+*/image/
