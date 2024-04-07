@@ -111,14 +111,14 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': 'reset-password-confirmation/?uid={uid}&token={token}',
-    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    # 'PASSWORD_RESET_CONFIRM_RETYPE': True,
     'EMAIL': {
         'activation': 'core.email_djoser.ActivationEmail',
         'confirmation': 'core.email_djoser.ConfirmationEmail',
         'password_reset': 'core.email_djoser.PasswordResetEmail',
         'password_changed_confirmation': 'core.email_djoser.PasswordConfirmationEmail',
     },
-    'USER_CREATE_PASSWORD_RETYPE': True,
+    # 'USER_CREATE_PASSWORD_RETYPE': True,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
     'ACTIVATION_URL': 'activate/?uid={uid}&token={token}',
     'SEND_ACTIVATION_EMAIL': True,
@@ -128,7 +128,7 @@ DJOSER = {
     # },
     'SERIALIZERS': {
         # тут нужен сериализатор для активации
-        'activation': 'users.serializers.CustomActivationSerializer',
+        # 'activation': 'users.serializers.CustomActivationSerializer',
         'user': 'users.serializers.CustomUserSerializer',
         'current_user': 'users.serializers.CustomUserSerializer',
     },

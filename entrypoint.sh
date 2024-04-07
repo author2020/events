@@ -4,6 +4,8 @@ python manage.py compilemessages -l ru
 
 python manage.py migrate --noinput
 
+python manage.py initial_specializations
+
 python manage.py collectstatic --noinput
 
 gunicorn event_app.wsgi:application --bind 0:8000
