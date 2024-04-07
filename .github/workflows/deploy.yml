@@ -64,8 +64,3 @@ jobs:
             docker image rm ${{ vars.DOCKER_USERNAME }}/event
             docker compose pull
             docker compose up -d
-
-            sleep 15
-            docker compose exec backend python manage.py migrate
-            docker compose exec backend python manage.py initial_specializations
-            # docker compose exec backend python manage.py collectstatic --noinput
