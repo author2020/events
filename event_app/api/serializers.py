@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.utils import timezone
 
 from events.models import Event, Subevent, Speaker
 
