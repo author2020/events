@@ -38,16 +38,17 @@ class SubeventAdmin(admin.ModelAdmin):
     list_display = (
         'title',
         'time',
-        'event'
+        'event',
+        'speaker',
     )
 
 
 @admin.register(Speaker)
 class SpeakerAdmin(admin.ModelAdmin):
     list_display = (
-        'photo',
         'full_name',
         'company',
         'contacts',
-        'position'
+        'position',
+        'photo',
     )
