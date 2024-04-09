@@ -23,6 +23,7 @@ class SubeventSerializer(serializers.ModelSerializer):
     Сериализатор для части программы.
     '''
     event = serializers.StringRelatedField(read_only=True)
+    speaker = SpeakerSerializer(read_only=True)
 
     class Meta:
         fields = '__all__'
