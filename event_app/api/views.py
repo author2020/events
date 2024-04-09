@@ -30,8 +30,6 @@ class EventViewSet(viewsets.ModelViewSet):
                 return Event.objects.filter(event_status='scheduled')
             elif self.request.query_params.get('status') == 'canceled':
                 return Event.objects.filter(event_status='canceled')
-            else:
-                return Event.objects.none()
         return Event.objects.all()
             
 
