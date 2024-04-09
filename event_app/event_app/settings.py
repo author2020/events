@@ -117,7 +117,8 @@ DJOSER = {
         'password_reset': 'core.email_djoser.PasswordResetEmail',
         'password_changed_confirmation': 'core.email_djoser.PasswordConfirmationEmail',
     },
-    'ACTIVATION_URL': 'activate/?uid={uid}&token={token}',
+    # 'ACTIVATION_URL': 'activate/?uid={uid}&token={token}',
+    'ACTIVATION_URL': 'signin?uid={uid}&token={token}',
     'SEND_ACTIVATION_EMAIL': True,
     'LOGIN_FIELD': 'email',
     # 'PERMISSIONS': {
