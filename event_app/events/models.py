@@ -69,15 +69,21 @@ class Event(models.Model):
     )
     location_address = models.CharField(
         max_length=200,
-        verbose_name='Адрес места проведения мероприятия'
+        verbose_name='Адрес места проведения мероприятия',
+        blank=True,
+        null=True
     )
     location_coordinates = models.CharField(
         max_length=100,
-        verbose_name='Координаты места проведения мероприятия'
+        verbose_name='Координаты места проведения мероприятия',
+        blank=True,
+        null=True
     )
     image = models.ImageField(
         upload_to='events/image/',
-        verbose_name='Обложка мероприятия'
+        verbose_name='Обложка мероприятия',
+        blank=True,
+        null=True
     )
     published_date = models.DateTimeField(
         auto_now_add=True,
@@ -85,7 +91,9 @@ class Event(models.Model):
     )
     host_photo = models.ImageField(
         upload_to='events/hosts/image/',
-        verbose_name='Фото ведущего'
+        verbose_name='Фото ведущего',
+        blank=True,
+        null=True
     )
     host_full_name = models.CharField(
         max_length=100,
@@ -148,6 +156,53 @@ class Event(models.Model):
         return self.title
 
 
+class Speaker(models.Model):
+    '''
+    Модель для спикера.
+    '''
+    first_name = models.CharField(
+        max_length=50,
+        verbose_name='Имя спикера'
+    )
+    last_name = models.CharField(
+        max_length=50,
+        verbose_name='Фамилия спикера'
+    )
+    company = models.CharField(
+        max_length=100,
+        verbose_name='Компания спикера',
+        blank=True,
+        null=True
+    )
+    contacts = models.CharField(
+        max_length=100,
+        verbose_name='Контакты спикера'
+    )
+    position = models.CharField(
+        max_length=100,
+        verbose_name='Должность спикера',
+        blank=True,
+        null=True
+    )
+    photo = models.ImageField(
+        upload_to='events/speakers/image/',
+        verbose_name='Фото спикера',
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        verbose_name = 'Спикер'
+        verbose_name_plural = 'Спикеры'
+
+    def __str__(self):
+        return self.full_name
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+
 class Subevent(models.Model):
     '''
     Модель для части программы на мероприятие.
@@ -167,55 +222,16 @@ class Subevent(models.Model):
         verbose_name='Мероприятие, в котором эта часть программы'
     )
 
+    speaker = models.ForeignKey(
+        Speaker,
+        on_delete=models.CASCADE,
+        related_name='subevents',
+        verbose_name='Спикер, участвующий в части программы'
+    )
+
     class Meta:
         verbose_name = 'Часть программы'
         verbose_name_plural = 'Части программы'
 
     def __str__(self):
         return self.title
-
-
-class Speaker(models.Model):
-    '''
-    Модель для спикера.
-    '''
-    photo = models.ImageField(
-        upload_to='events/speakers/image/',
-        verbose_name='Фото спикера'
-    )
-    first_name = models.CharField(
-        max_length=50,
-        verbose_name='Имя спикера'
-    )
-    last_name = models.CharField(
-        max_length=50,
-        verbose_name='Фамилия спикера'
-    )
-    company = models.CharField(
-        max_length=100,
-        verbose_name='Компания спикера'
-    )
-    contacts = models.CharField(
-        max_length=100,
-        verbose_name='Контакты спикера'
-    )
-    position = models.CharField(
-        max_length=100,
-        verbose_name='Должность спикера'
-    )
-    subevent = models.ManyToManyField(
-        Subevent,
-        related_name='speakers',
-        verbose_name='Часть программы, в которой участвует спикер'
-    )
-
-    class Meta:
-        verbose_name = 'Спикер'
-        verbose_name_plural = 'Спикеры'
-
-    def __str__(self):
-        return self.full_name
-
-    @property
-    def full_name(self):
-        return f"{self.first_name} {self.last_name}"
