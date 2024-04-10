@@ -5,6 +5,8 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from .models import User, Specialization
+from events.models import EventRegistration
+from api.serializers import EventRegistrationSerializer
 
 
 class SpecializationSerializer(serializers.ModelSerializer):
@@ -13,10 +15,16 @@ class SpecializationSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 class CustomUserSerializer(UserSerializer):
-    email = serializers.EmailField(required=True,
-                                   validators=[UniqueValidator(queryset=User.objects.all())])
+    email = serializers.EmailField(
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
     profile_full = serializers.SerializerMethodField()
-    specialization = serializers.SlugRelatedField(many=True, slug_field='name', queryset=Specialization.objects.all(), required=False)
+    specialization = serializers.SlugRelatedField(
+        many=True, slug_field='name',
+        queryset=Specialization.objects.all(), required=False
+    )
+    my_events = serializers.SerializerMethodField()
 
     class Meta(UserSerializer.Meta):
         fields = ('id', 'email', 'first_name', 'last_name',
@@ -26,7 +34,7 @@ class CustomUserSerializer(UserSerializer):
                   'consent_personal_data_date',
                   'consent_vacancy_data_processing',
                   'consent_vacancy_data_date',
-                  'consent_random_coffee', 'profile_full')
+                  'consent_random_coffee', 'profile_full', 'my_events')
         extra_kwargs = {'password': {'write_only': True}}
         read_only_fields = ('id', 'role',
                             'consent_personal_data_date',
@@ -36,6 +44,11 @@ class CustomUserSerializer(UserSerializer):
 
     def get_profile_full(self, obj):
         return obj.profile_full
+    
+    def get_my_events(self, obj):
+        return EventRegistration.objects.filter(participant=obj).values(
+            'event_id', 'event__title', 'event__datetime',
+            'registration_date', 'approved').order_by('event__datetime')
     
     def update(self, instance, validated_data):
         if 'password' in validated_data:
