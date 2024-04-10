@@ -35,15 +35,23 @@ class EventSerializer(serializers.ModelSerializer):
     Сериализатор для мероприятия.
     '''
     subevents = SubeventSerializer(many=True, read_only=True)
-    # participants = serializers.StringRelatedField(many=True, read_only=True)
     participant_count = serializers.SerializerMethodField()
+    my_participation = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Event
-        fields = '__all__'
+        exclude = ['participants']
 
     def get_participant_count(self, obj):
         return obj.registrations.count()
+    
+    def get_my_participation(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            return EventRegistration.objects.filter(event=obj, participant=user).exists()
+        return "Not authenticated"
+
 
 class EventRegistrationSerializer(serializers.ModelSerializer):
     '''
