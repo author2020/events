@@ -5,7 +5,8 @@ from random import randint, choice
 from django.core.management.base import BaseCommand
 
 from event_app.settings import TIME_ZONE
-from events.models import Event, Subevent, Speaker
+from events.models import Event, EventRegistration, Speaker, Subevent
+from users.models import User
 
 class Command(BaseCommand):
     help = 'Fill db with test data'
@@ -18,6 +19,8 @@ class Command(BaseCommand):
                    'Music industry', 'Cinema production', 'Literature trends', 'Sport achievements', 'Education methods']
     SECTION_NAMES = ['Local management', 'IT Reliability', 'Household appliances', 'Space exploration', 'Music industry',
                      "Escaping from library", "Sport achievements", "Education methods", "Healthcare innovations", "Artificial intelligence"]
+    GUEST_NAMES = ['Иван', 'Петр', 'Сергей', 'Александр', 'Андрей', 'Дмитрий', 'Михаил', 'Алексей', 'Владимир', 'Николай']
+    GUEST_SURNAMES = ['Иванов', 'Петров', 'Сидоров', 'Александров', 'Андреев', 'Дмитриев', 'Михайлов', 'Алексеев', 'Владимиров', 'Николаев']
     
 
 
@@ -72,9 +75,34 @@ class Command(BaseCommand):
             )
             self._create_subevents_with_speakers(event, subevents_count)
 
+    def _create_users_and_registrations(self, count):
+        total_events = Event.objects.count()
+        for i in range(count):
+            user = User.objects.create(
+                email=f'user{i}@example.com',
+                first_name=choice(self.GUEST_NAMES),
+                last_name=choice(self.GUEST_SURNAMES),
+                password='12345678!#Aa',
+                is_active=True,
+                is_staff=False,
+                is_superuser=False,
+            )
+            self._create_event_registrations(user, randint(0, 10), total_events)
+    
+    def _create_event_registrations(self, user, count, total_events):
+        if count == 0 or total_events == 0:
+            return
+        for i in range(count):
+            EventRegistration.objects.get_or_create(
+                participant=user,
+                event=Event.objects.get(id=randint(1, total_events)),
+                approved=True
+            )
+
 
     def handle(self, *args, **options):
         self._create_speakers(10)
         self._create_events(15, subevents_count=randint(2, 5), upcoming=True)
         self._create_events(15, subevents_count=randint(2, 5), upcoming=False)
+        self._create_users_and_registrations(100)
         self.stdout.write(self.style.SUCCESS('Data filled successfully'))

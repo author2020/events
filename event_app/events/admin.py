@@ -1,17 +1,24 @@
 from django.contrib import admin
 
-from .models import Event, Subevent, Speaker
+from .models import Event, EventRegistration, Speaker, Subevent
+
+
+class EventRegistrationInline(admin.options.InlineModelAdmin):
+    template = 'admin/edit_inline/yandex_events_inline.html'
+    model = EventRegistration
+    extra = 0
 
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = (
         'title',
+        'datetime',
+        'registered',
         'registration_status',
         'organizer_name',
         'organizer_contacts',
         'description',
-        'datetime',
         'format',
         'participant_limit',
         'location_address',
@@ -31,6 +38,11 @@ class EventAdmin(admin.ModelAdmin):
         'online_stream_link_start_date',
         'online_stream_link_end_date',
     )
+
+    inlines = (EventRegistrationInline,)
+
+    def registered(self, obj):
+        return obj.registrations.count()
 
 
 @admin.register(Subevent)
@@ -52,3 +64,22 @@ class SpeakerAdmin(admin.ModelAdmin):
         'position',
         'photo',
     )
+
+
+@admin.register(EventRegistration)
+class EventRegistrationAdmin(admin.ModelAdmin):
+    list_display = (
+        'participant',
+        'event',
+        'registration_date',
+        'approved',
+    )
+    list_filter = (
+        'event',
+        'participant',
+        'registration_date')
+    search_fields = (
+        'event__title',
+        'participant__email',
+        'participant__first_name',
+        'participant__last_name',)

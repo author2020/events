@@ -3,12 +3,14 @@ import pytz
 
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 
 from event_app.settings import TIME_ZONE
-from events.models import Event, Speaker
-from api.serializers import (EventSerializer, SubeventSerializer,
-                             SpeakerSerializer)
-from api.pagination import CustomPagination
+from events.models import Event, EventRegistration, Speaker
+from api.serializers import (EventSerializer, EventRegistrationSerializer,
+                             SubeventSerializer, SpeakerSerializer)
+from api.pagination import CustomPagination, CustomUserPagination
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -51,3 +53,20 @@ class SpeakerViewSet(viewsets.ModelViewSet):
     '''
     queryset = Speaker.objects.all()
     serializer_class = SpeakerSerializer
+
+class EventRegistrationViewSet(viewsets.ModelViewSet):
+    '''
+    Представление для работы с регистрациями на мероприятие.
+    '''
+    serializer_class = EventRegistrationSerializer
+    pagination_class = CustomUserPagination
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self): # add view only for current user or admins?
+        return EventRegistration.objects.filter(event_id=self.kwargs.get('event_id'))
+    
+    def perform_create(self, serializer):
+        if not self.request.user.profile_full:
+            raise ValidationError('Заполните все поля профиля') # custom error handling
+        event = Event.objects.get(id=self.kwargs.get('event_id'))
+        serializer.save(event=event, participant=self.request.user)
