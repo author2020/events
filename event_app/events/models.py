@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-User = get_user_model()
+from users.models import User
 
 EVENT_STATUS_CHOICES = [
         ('on_time', 'По расписанию'),
@@ -153,7 +153,7 @@ class Event(models.Model):
         verbose_name_plural = 'Мероприятия'
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.datetime.date()}"
 
 
 class Speaker(models.Model):
@@ -235,3 +235,42 @@ class Subevent(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class EventRegistration(models.Model):
+    '''
+    Модель для регистрации на мероприятие.
+    '''
+
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='registrations',
+        verbose_name='Мероприятие, на которое регистрация',
+        null=False, blank=False,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='registrations',
+        verbose_name='Пользователь, зарегистрировавшийся на мероприятие',
+        null=False, blank=False
+    )
+    registration_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата регистрации'
+    )
+    approved = models.BooleanField(
+        default=False,
+        verbose_name='Регистрация подтверждена'
+    )
+
+    class Meta:
+        verbose_name = 'Регистрация'
+        verbose_name_plural = 'Регистрации'
+        constraints = [
+            models.UniqueConstraint(fields=['event', 'user'], name='unique_registration')
+        ]
+
+    def __str__(self):
+        return f'{self.registration_date.strftime("%d.%m.%Y %H:%M")}. {self.user} - {self.event}.'
