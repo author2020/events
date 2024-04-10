@@ -249,7 +249,7 @@ class EventRegistration(models.Model):
         verbose_name='Мероприятие, на которое регистрация',
         null=False, blank=False,
     )
-    user = models.ForeignKey(
+    participant = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='registrations',
@@ -269,8 +269,8 @@ class EventRegistration(models.Model):
         verbose_name = 'Регистрация'
         verbose_name_plural = 'Регистрации'
         constraints = [
-            models.UniqueConstraint(fields=['event', 'user'], name='unique_registration')
+            models.UniqueConstraint(fields=['event', 'participant'], name='unique_registration')
         ]
 
     def __str__(self):
-        return f'{self.registration_date.strftime("%d.%m.%Y %H:%M")}. {self.user} - {self.event}.'
+        return f'{self.registration_date.strftime("%d.%m.%Y %H:%M")}. {self.participant} - {self.event}.'

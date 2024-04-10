@@ -69,15 +69,17 @@ class SpeakerAdmin(admin.ModelAdmin):
 @admin.register(EventRegistration)
 class EventRegistrationAdmin(admin.ModelAdmin):
     list_display = (
+        'participant',
         'event',
-        'user',
         'registration_date',
         'approved',
     )
     list_filter = (
         'event',
-        'user',
+        'participant',
         'registration_date')
     search_fields = (
         'event__title',
-        'user__email',)
+        'participant__email',
+        'participant__first_name',
+        'participant__last_name',)

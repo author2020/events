@@ -94,8 +94,8 @@ class Command(BaseCommand):
             return
         for i in range(count):
             EventRegistration.objects.get_or_create(
-                user=user,
-                event=Event.objects.get(id=randint(1, total_events-1)),
+                participant=user,
+                event=Event.objects.get(id=randint(1, total_events)),
                 approved=True
             )
 
