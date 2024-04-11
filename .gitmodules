@@ -1,0 +1,3 @@
+[submodule "funtech-front"]
+	path = funtech-front
+	url = https://github.com/VladislavSerduykov/funtech-front.git
