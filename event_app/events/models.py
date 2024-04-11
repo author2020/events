@@ -3,28 +3,28 @@ from django.db import models
 
 from users.models import User
 
-EVENT_STATUS_CHOICES = [
-        ('on_time', 'По расписанию'),
-        ('scheduled', 'Запланировано'),
-        ('cancelled', 'Отменено'),
-    ]
-
-REGISTRATION_STATUS_CHOICES = [
-        ('not_started', 'Регистрация еще не началась'),
-        ('open', 'Идет регистрация'),
-        ('closed', 'Регистрация закрыта'),
-    ]
-
-FORMAT_CHOICES = [
-        ('online', 'Онлайн'),
-        ('offline', 'Офлайн'),
-    ]
-
 
 class Event(models.Model):
     '''
     Модель мероприятия.
     '''
+
+    EVENT_STATUS_CHOICES = [
+            ('on_time', 'По расписанию'),
+            ('scheduled', 'Запланировано'),
+            ('cancelled', 'Отменено'),
+        ]
+
+    REGISTRATION_STATUS_CHOICES = [
+            ('not_started', 'Регистрация еще не началась'),
+            ('open', 'Идет регистрация'),
+            ('closed', 'Регистрация закрыта'),
+        ]
+
+    FORMAT_CHOICES = [
+            ('online', 'Онлайн'),
+            ('offline', 'Офлайн'),
+        ]
 
     title = models.CharField(
         max_length=100,

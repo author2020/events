@@ -37,11 +37,20 @@ class EventSerializer(serializers.ModelSerializer):
     subevents = SubeventSerializer(many=True, read_only=True)
     participant_count = serializers.SerializerMethodField()
     my_participation = serializers.SerializerMethodField()
+    registration_status = serializers.SerializerMethodField()
+    format = serializers.SerializerMethodField()
 
 
     class Meta:
         model = Event
         exclude = ['participants']
+
+    def get_registration_status(self, obj):
+        return obj.get_registration_status_display()
+    
+    def get_format(self, obj):
+        return obj.get_format_display()
+        
 
     def get_participant_count(self, obj):
         return obj.registrations.count()
