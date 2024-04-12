@@ -164,3 +164,10 @@ cython_debug/
 staticfiles/
 
 */image/
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover 
