@@ -6,7 +6,7 @@ from users.models import User
 
 class Event(models.Model):
     '''
-    Модель мероприятия.
+    Модель события.
     '''
 
     EVENT_STATUS_CHOICES = [
@@ -28,12 +28,12 @@ class Event(models.Model):
 
     title = models.CharField(
         max_length=100,
-        verbose_name='Название мероприятия'
+        verbose_name='Название события'
     )
     event_status = models.CharField(
         max_length=20,
         choices=EVENT_STATUS_CHOICES,
-        verbose_name='Статус мероприятия'
+        verbose_name='Статус события'
     )
     registration_status = models.CharField(
         max_length=20,
@@ -49,15 +49,15 @@ class Event(models.Model):
         verbose_name='Контакты организатора'
     )
     description = models.TextField(
-        verbose_name='Описание мероприятия'
+        verbose_name='Описание события'
     )
     datetime = models.DateTimeField(
-        verbose_name='Дата и время начала проведения мероприятия'
+        verbose_name='Дата и время начала события'
     )
     format = models.CharField(
         max_length=20,
         choices=FORMAT_CHOICES,
-        verbose_name='Формат мероприятия'
+        verbose_name='Формат события'
     )
     participant_limit = models.PositiveIntegerField(
         verbose_name='Лимит участников'
@@ -65,23 +65,23 @@ class Event(models.Model):
     participants = models.ManyToManyField(
         User,
         blank=True,
-        verbose_name='Участники мероприятия'
+        verbose_name='Участники события'
     )
     location_address = models.CharField(
         max_length=200,
-        verbose_name='Адрес места проведения мероприятия',
+        verbose_name='Место проведения события',
         blank=True,
         null=True
     )
     location_coordinates = models.CharField(
         max_length=100,
-        verbose_name='Координаты места проведения мероприятия',
+        verbose_name='Координаты места проведения события',
         blank=True,
         null=True
     )
     image = models.ImageField(
         upload_to='events/image/',
-        verbose_name='Обложка мероприятия',
+        verbose_name='Обложка события',
         blank=True,
         null=True
     )
@@ -113,13 +113,13 @@ class Event(models.Model):
     )
     event_link = models.URLField(
         max_length=200,
-        verbose_name='Ссылка на мероприятие'
+        verbose_name='Ссылка на событие'
     )
     recording_link = models.URLField(
         max_length=200,
         blank=True,
         null=True,
-        verbose_name='Ссылка на запись мероприятия'
+        verbose_name='Ссылка на запись события'
     )
     recording_link_start_date = models.DateTimeField(
         blank=True,
@@ -135,7 +135,7 @@ class Event(models.Model):
         max_length=200,
         blank=True,
         null=True,
-        verbose_name='Ссылка на онлайн-трансляцию мероприятия'
+        verbose_name='Ссылка на онлайн-трансляцию события'
     )
     online_stream_link_start_date = models.DateTimeField(
         blank=True,
@@ -149,8 +149,8 @@ class Event(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Мероприятие'
-        verbose_name_plural = 'Мероприятия'
+        verbose_name = 'Событие'
+        verbose_name_plural = 'События'
 
     def __str__(self):
         return f"{self.title} - {self.datetime.date()}"
@@ -205,28 +205,28 @@ class Speaker(models.Model):
 
 class Subevent(models.Model):
     '''
-    Модель для части программы на мероприятие.
+    Модель для части программы события.
     '''
 
     title = models.CharField(
         max_length=100,
-        verbose_name='Название части программы'
+        verbose_name='Название программы'
     )
     time = models.TimeField(
-        verbose_name='Время начала проведения части программы'
+        verbose_name='Время начала программы'
     )
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
         related_name='subevents',
-        verbose_name='Мероприятие, в котором эта часть программы'
+        verbose_name='Событие, в котором эта программа'
     )
 
     speaker = models.ForeignKey(
         Speaker,
         on_delete=models.CASCADE,
         related_name='subevents',
-        verbose_name='Спикер, участвующий в части программы'
+        verbose_name='Спикер, участвующий в программе'
     )
 
     class Meta:
@@ -239,21 +239,21 @@ class Subevent(models.Model):
 
 class EventRegistration(models.Model):
     '''
-    Модель для регистрации на мероприятие.
+    Модель для регистрации на событие.
     '''
 
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
         related_name='registrations',
-        verbose_name='Мероприятие, на которое регистрация',
+        verbose_name='Событие, на которое регистрация',
         null=False, blank=False,
     )
     participant = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='registrations',
-        verbose_name='Пользователь, зарегистрировавшийся на мероприятие',
+        verbose_name='Пользователь, зарегистрировавшийся на событие',
         null=False, blank=False
     )
     registration_date = models.DateTimeField(
