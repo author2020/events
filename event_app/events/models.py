@@ -28,12 +28,12 @@ class Event(models.Model):
 
     title = models.CharField(
         max_length=100,
-        verbose_name='Название события'
+        verbose_name='Название'
     )
     event_status = models.CharField(
         max_length=20,
         choices=EVENT_STATUS_CHOICES,
-        verbose_name='Статус события'
+        verbose_name='Статус'
     )
     registration_status = models.CharField(
         max_length=20,
@@ -49,15 +49,15 @@ class Event(models.Model):
         verbose_name='Контакты организатора'
     )
     description = models.TextField(
-        verbose_name='Описание события'
+        verbose_name='Описание'
     )
     datetime = models.DateTimeField(
-        verbose_name='Дата и время начала события'
+        verbose_name='Дата и время начала'
     )
     format = models.CharField(
         max_length=20,
         choices=FORMAT_CHOICES,
-        verbose_name='Формат события'
+        verbose_name='Формат'
     )
     participant_limit = models.PositiveIntegerField(
         verbose_name='Лимит участников'
@@ -65,17 +65,17 @@ class Event(models.Model):
     participants = models.ManyToManyField(
         User,
         blank=True,
-        verbose_name='Участники события'
+        verbose_name='Участники'
     )
     location_address = models.CharField(
         max_length=200,
-        verbose_name='Место проведения события',
+        verbose_name='Место проведения',
         blank=True,
         null=True
     )
     location_coordinates = models.CharField(
         max_length=100,
-        verbose_name='Координаты места проведения события',
+        verbose_name='Координаты места проведения',
         blank=True,
         null=True
     )
@@ -119,7 +119,7 @@ class Event(models.Model):
         max_length=200,
         blank=True,
         null=True,
-        verbose_name='Ссылка на запись события'
+        verbose_name='Ссылка на запись'
     )
     recording_link_start_date = models.DateTimeField(
         blank=True,
@@ -135,7 +135,7 @@ class Event(models.Model):
         max_length=200,
         blank=True,
         null=True,
-        verbose_name='Ссылка на онлайн-трансляцию события'
+        verbose_name='Ссылка на онлайн-трансляцию'
     )
     online_stream_link_start_date = models.DateTimeField(
         blank=True,
@@ -162,31 +162,31 @@ class Speaker(models.Model):
     '''
     first_name = models.CharField(
         max_length=50,
-        verbose_name='Имя спикера'
+        verbose_name='Имя'
     )
     last_name = models.CharField(
         max_length=50,
-        verbose_name='Фамилия спикера'
+        verbose_name='Фамилия'
     )
     company = models.CharField(
         max_length=100,
-        verbose_name='Компания спикера',
+        verbose_name='Компания',
         blank=True,
         null=True
     )
     contacts = models.CharField(
         max_length=100,
-        verbose_name='Контакты спикера'
+        verbose_name='Контакты'
     )
     position = models.CharField(
         max_length=100,
-        verbose_name='Должность спикера',
+        verbose_name='Должность',
         blank=True,
         null=True
     )
     photo = models.ImageField(
         upload_to='events/speakers/image/',
-        verbose_name='Фото спикера',
+        verbose_name='Фото',
         blank=True,
         null=True
     )
@@ -210,10 +210,10 @@ class Subevent(models.Model):
 
     title = models.CharField(
         max_length=100,
-        verbose_name='Название программы'
+        verbose_name='Название'
     )
     time = models.TimeField(
-        verbose_name='Время начала программы'
+        verbose_name='Время начала'
     )
     event = models.ForeignKey(
         Event,
@@ -230,8 +230,8 @@ class Subevent(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Часть программы'
-        verbose_name_plural = 'Части программы'
+        verbose_name = 'Часть программы события'
+        verbose_name_plural = 'Части программы события'
 
     def __str__(self):
         return self.title
