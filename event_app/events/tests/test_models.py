@@ -37,12 +37,12 @@ class EventModelTestCase(TestCase):
     def test_title_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('title').verbose_name
-        self.assertEqual(field_label, 'Название мероприятия')
+        self.assertEqual(field_label, 'Название')
 
     def test_event_status_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('event_status').verbose_name
-        self.assertEqual(field_label, 'Статус мероприятия')
+        self.assertEqual(field_label, 'Статус')
 
     def test_registration_status_label(self):
         event = Event.objects.get(id=1)
@@ -52,27 +52,27 @@ class EventModelTestCase(TestCase):
     def test_description_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('description').verbose_name
-        self.assertEqual(field_label, 'Описание мероприятия')
+        self.assertEqual(field_label, 'Описание')
 
     def test_datetime_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('datetime').verbose_name
-        self.assertEqual(field_label, 'Дата и время начала проведения мероприятия')
+        self.assertEqual(field_label, 'Дата и время начала')
 
     def test_location_address_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('location_address').verbose_name
-        self.assertEqual(field_label, 'Адрес места проведения мероприятия')
+        self.assertEqual(field_label, 'Место проведения')
 
     def test_location_coordinates_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('location_coordinates').verbose_name
-        self.assertEqual(field_label, 'Координаты места проведения мероприятия')
+        self.assertEqual(field_label, 'Координаты места проведения')
 
     def test_format_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('format').verbose_name
-        self.assertEqual(field_label, 'Формат мероприятия')
+        self.assertEqual(field_label, 'Формат')
 
     def test_organizer_name_label(self):
         event = Event.objects.get(id=1)
@@ -112,12 +112,12 @@ class EventModelTestCase(TestCase):
     def test_event_link_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('event_link').verbose_name
-        self.assertEqual(field_label, 'Ссылка на мероприятие')
+        self.assertEqual(field_label, 'Ссылка на событие')
 
     def test_recording_link_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('recording_link').verbose_name
-        self.assertEqual(field_label, 'Ссылка на запись мероприятия')
+        self.assertEqual(field_label, 'Ссылка на запись')
 
     def test_recording_link_start_date_label(self):
         event = Event.objects.get(id=1)
@@ -132,7 +132,7 @@ class EventModelTestCase(TestCase):
     def test_online_stream_link_label(self):
         event = Event.objects.get(id=1)
         field_label = event._meta.get_field('online_stream_link').verbose_name
-        self.assertEqual(field_label, 'Ссылка на онлайн-трансляцию мероприятия')
+        self.assertEqual(field_label, 'Ссылка на онлайн-трансляцию')
 
     def test_online_stream_start_date_label(self):
         event = Event.objects.get(id=1)
@@ -145,10 +145,10 @@ class EventModelTestCase(TestCase):
         self.assertEqual(field_label, 'Конец срока ссылки трансляции')
     
     def test_verbose_name(self):
-        self.assertEqual(str(Event._meta.verbose_name), 'Мероприятие')
+        self.assertEqual(str(Event._meta.verbose_name), 'Событие')
 
     def test_verbose_name_plural(self):
-        self.assertEqual(str(Event._meta.verbose_name_plural), 'Мероприятия')
+        self.assertEqual(str(Event._meta.verbose_name_plural), 'События')
 
     def test_object_name_is_title(self):
         event = Event.objects.get(id=1)
@@ -195,12 +195,12 @@ class EventRegistrationModelTest(TestCase):
     def test_event_label(self):
         event_registration = EventRegistration.objects.get(id=1)
         field_label = event_registration._meta.get_field('event').verbose_name
-        self.assertEqual(field_label, 'Мероприятие, на которое регистрация')
+        self.assertEqual(field_label, 'Событие, на которое регистрация')
 
     def test_participant_label(self):
         event_registration = EventRegistration.objects.get(id=1)
         field_label = event_registration._meta.get_field('participant').verbose_name
-        self.assertEqual(field_label, 'Пользователь, зарегистрировавшийся на мероприятие')
+        self.assertEqual(field_label, 'Пользователь, зарегистрировавшийся на событие')
 
     def test_approved_label(self):
         event_registration = EventRegistration.objects.get(id=1)
@@ -246,32 +246,32 @@ class SpeakerModelTest(TestCase):
     def test_first_name_label(self):
         speaker = Speaker.objects.get(id=1)
         field_label = speaker._meta.get_field('first_name').verbose_name
-        self.assertEqual(field_label, 'Имя спикера')
+        self.assertEqual(field_label, 'Имя')
 
     def test_last_name_label(self):
         speaker = Speaker.objects.get(id=1)
         field_label = speaker._meta.get_field('last_name').verbose_name
-        self.assertEqual(field_label, 'Фамилия спикера')
+        self.assertEqual(field_label, 'Фамилия')
 
     def test_contacts_label(self):
         speaker = Speaker.objects.get(id=1)
         field_label = speaker._meta.get_field('contacts').verbose_name
-        self.assertEqual(field_label, 'Контакты спикера')
+        self.assertEqual(field_label, 'Контакты')
 
     def test_company_label(self):
         speaker = Speaker.objects.get(id=1)
         field_label = speaker._meta.get_field('company').verbose_name
-        self.assertEqual(field_label, 'Компания спикера')
+        self.assertEqual(field_label, 'Компания')
 
     def test_position_label(self):
         speaker = Speaker.objects.get(id=1)
         field_label = speaker._meta.get_field('position').verbose_name
-        self.assertEqual(field_label, 'Должность спикера')
+        self.assertEqual(field_label, 'Должность')
 
     def test_photo_label(self):
         speaker = Speaker.objects.get(id=1)
         field_label = speaker._meta.get_field('photo').verbose_name
-        self.assertEqual(field_label, 'Фото спикера')
+        self.assertEqual(field_label, 'Фото')
 
     def test_object_name_is_full_name(self):
         speaker = Speaker.objects.get(id=1)
@@ -340,28 +340,28 @@ class SubeventModelTest(TestCase):
     def test_title_label(self):
         subevent = Subevent.objects.get(id=1)
         field_label = subevent._meta.get_field('title').verbose_name
-        self.assertEqual(field_label, 'Название части программы')
+        self.assertEqual(field_label, 'Название')
 
     def test_time_label(self):
         subevent = Subevent.objects.get(id=1)
         field_label = subevent._meta.get_field('time').verbose_name
-        self.assertEqual(field_label, 'Время начала проведения части программы')
+        self.assertEqual(field_label, 'Время начала')
 
     def test_event_label(self):
         subevent = Subevent.objects.get(id=1)
         field_label = subevent._meta.get_field('event').verbose_name
-        self.assertEqual(field_label, 'Мероприятие, в котором эта часть программы')
+        self.assertEqual(field_label, 'Событие, в котором эта программа')
 
     def test_speaker_label(self):
         subevent = Subevent.objects.get(id=1)
         field_label = subevent._meta.get_field('speaker').verbose_name
-        self.assertEqual(field_label, 'Спикер, участвующий в части программы')
+        self.assertEqual(field_label, 'Спикер, участвующий в программе')
 
     def test_verbose_name(self):
-        self.assertEqual(str(Subevent._meta.verbose_name), 'Часть программы')
+        self.assertEqual(str(Subevent._meta.verbose_name), 'Часть программы события')
 
     def test_verbose_name_plural(self):
-        self.assertEqual(str(Subevent._meta.verbose_name_plural), 'Части программы')
+        self.assertEqual(str(Subevent._meta.verbose_name_plural), 'Части программы события')
 
     def test_str(self):
         subevent = Subevent.objects.get(id=1)
