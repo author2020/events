@@ -94,6 +94,7 @@ class EventRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventRegistration
         fields = '__all__'
+        read_only_fields = ['approved']
 
     def create(self, validated_data):
         current_count = EventRegistration.objects.filter(event=validated_data['event']).count()
