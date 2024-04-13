@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+from django.core.validators import RegexValidator
 
 from events.models import Event, EventRegistration, Speaker, Subevent
 
@@ -9,6 +11,16 @@ class SpeakerSerializer(serializers.ModelSerializer):
     '''
     subevent = serializers.StringRelatedField(many=True, read_only=True)
     full_name = serializers.SerializerMethodField()
+    first_name = serializers.CharField(validators=[RegexValidator(
+        regex=r'^[a-zA-Zа-яА-Я]+$',
+        message='Имя может содержать только русские либо латинские буквы!')])
+    last_name = serializers.CharField(validators=[RegexValidator(
+        regex=r'^[a-zA-Zа-яА-Я\-]+$',
+        message='Фамилия может содержать только русские либо латинские'
+                ' буквы, а также тире!')])
+    contacts = serializers.CharField(
+        validators=[UniqueValidator(queryset=Speaker.objects.all())]
+    )
 
     class Meta:
         model = Speaker
