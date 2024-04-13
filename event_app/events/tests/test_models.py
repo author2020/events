@@ -2,7 +2,7 @@ from django.db.utils import IntegrityError
 from django.test import Client, TestCase
 
 from events.admin import EventAdmin
-from events.models import Event, EventRegistration, Speaker, Subevent
+from events.models import Event, EventRegistration, Photo, Speaker, Subevent
 from users.models import User
 
 
@@ -420,3 +420,57 @@ class EventAdminTest(TestCase):
         event = Event.objects.get(id=1)
         event_admin = EventAdmin(Event, None)
         self.assertEqual(event_admin.registered(event), 2)
+
+
+class PhotoModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        event = Event.objects.create(
+            title='Test event',
+            event_status='on_time',
+            registration_status='open',
+            description='Test description',
+            datetime='2021-10-10 00:00:00',
+            location_address='Test address',
+            location_coordinates='Test coordinates',
+            format='online',
+            organizer_name='Test organizer',
+            organizer_contacts='Test contacts',
+            participant_limit=100,
+            host_full_name='Test host',
+            host_contacts='Test host contacts',
+            host_company='Test company',
+            host_position='Test position',
+            event_link='www.testlink.org',
+            recording_link='www.testrecordinglink.org',
+            recording_link_start_date='2021-10-10 00:00:00',
+            recording_link_end_date='2021-10-10 00:00:00',
+            online_stream_link='www.teststreamlink.org',
+            online_stream_link_start_date='2021-10-10 00:00:00',
+            online_stream_link_end_date='2021-10-10 00:00:00'
+        )
+        Photo.objects.create(
+            event=event,
+            image='www.testphoto.org'
+        )
+
+    def test_event_label(self):
+        photo = Photo.objects.get(id=1)
+        field_label = photo._meta.get_field('event').verbose_name
+        self.assertEqual(field_label, 'Событие, к которому относится фотография')
+
+    def test_image_label(self):
+        photo = Photo.objects.get(id=1)
+        field_label = photo._meta.get_field('image').verbose_name
+        self.assertEqual(field_label, 'Фотография')
+
+    def test_verbose_name(self):
+        self.assertEqual(str(Photo._meta.verbose_name), 'Фотография')
+
+    def test_verbose_name_plural(self):
+        self.assertEqual(str(Photo._meta.verbose_name_plural), 'Фотографии')
+
+    def test_str(self):
+        photo = Photo.objects.get(id=1)
+        expected_str = photo.event.title + ' - ' + photo.image.name
+        self.assertEqual(expected_str, str(photo))
