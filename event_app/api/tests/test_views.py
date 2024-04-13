@@ -1,7 +1,8 @@
 from django.test import Client, TestCase
 
-from .fixtures import EventFactory, SpeakerFactory, SubeventFactory
+from .fixtures import EventFactory, SpeakerFactory, SubeventFactory, UserFactory
 from events.models import Event, Speaker, Subevent
+from users.models import User
 
 
 class TestEventViewTestCase(TestCase):
@@ -24,7 +25,6 @@ class TestEventViewTestCase(TestCase):
 
     def test_event_list_url_upcoming(self):
         response = self.client.get('/api/v1/events/?status=upcoming')
-        print('WWWWWW', response.json())
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['results']), 2)
         self.assertEqual(response.json()['results'][0]['title'], 'Test event future 1')
@@ -90,17 +90,57 @@ class TestSubeventViewTestCase(TestCase):
         self.assertIn('www.testphoto.org', response.json()[0]['photo'])
 
 
-# class EventRegistrationViewTestCase(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         EventFactory.create()
-#         event = Event.objects.first()
+class SpeakerViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        SpeakerFactory.create()
+        SpeakerFactory.create(first_name='Test speaker 2 first name', last_name='Test speaker 2 last name')
+        SpeakerFactory.create(first_name='Test speaker 3 first name', last_name='Test speaker 3 last name')
 
-#     def setUp(self):
-#         self.client = Client()
+    def setUp(self):
+        self.client = Client()
 
-#     def test_event_registration_list_url(self):
-#         response = self.client.get('/api/v1/events/1/registrations/')
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(len(response.json()), 0)
-#         self.assertEqual(response.json(), [])
+    def test_speaker_list_url(self):
+        response = self.client.get('/api/v1/speakers/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 3)
+        self.assertEqual(response.json()[0]['first_name'], 'Test speaker first name')
+        self.assertEqual(response.json()[0]['last_name'], 'Test speaker last name')
+        self.assertEqual(response.json()[0]['position'], 'Test position')
+        self.assertEqual(response.json()[0]['company'], 'Test company')
+        self.assertEqual(response.json()[0]['contacts'], 'Test contacts')
+        self.assertIn('www.testphoto.org', response.json()[0]['photo'])
+
+
+class EventRegistrationViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        EventFactory.create()
+        cls.event = Event.objects.first()
+        UserFactory.create(email="notparticipant@example.com")
+        UserFactory.create(email="participant@example.com")
+        UserFactory.create(email="secondparticipant@example.com")
+        UserFactory.create(email="adminuser@example.com", role='admin')
+
+    def setUp(self):
+        self.client = Client()
+        self.notpartiicpant_token = self.client.post('/api/v1/auth/token/login/',
+                                                     {"email": "notparticipant@example.com",
+                                                     "password": "usertestpasSW1#"}
+                                                     ).json()
+        self.participant_token = self.client.post('/api/v1/auth/token/login/',
+                                                  {"email": "participant@example.com",
+                                                  "password": "usertestpasSW1#"}
+                                                  ).json()['auth_token']
+        self.admin_token = self.client.post('/api/v1/auth/token/login/',
+                                            {"email": "notparticipant@example.com",
+                                            "password": "usertestpasSW1#"}
+                                            ).json()['auth_token']
+
+    def test_event_registration_list_authorizing(self):
+        response = self.client.get('/api/v1/events/1/registrations/')
+        self.assertEqual(response.status_code, 401)
+
+    def test_event_registration_url(self):
+        response = self.client.get('/api/v1/events/1/registrations/', HTTP_AUTHORIZATION=f'Token {self.notpartiicpant_token}')
+        self.assertEqual(response.status_code, 200)

@@ -1,4 +1,4 @@
-from factory.django import DjangoModelFactory
+from factory.django import DjangoModelFactory, Password
 
 from events.models import Event, Speaker, Subevent
 from users.models import User
@@ -51,16 +51,26 @@ class SubeventFactory(DjangoModelFactory):
     event: Event = None
     speaker: Speaker = None
 
-# class UserFactory(DjangoModelFactory):
-#     class Meta:
-#         model = User
+class UserFactory(DjangoModelFactory):
+    class Meta:
+        model = User
 
-#     email = 'testemail@example.com'
-#     password = 'testpassword'
-#     first_name = 'Test first name'
-#     last_name = 'Test last name'
-#     profile_full = True
-#     is_active = True
-#     is_staff = False
-#     is_superuser = False
-
+    email = 'testemail@example.com'
+    password = Password('usertestpasSW1#')
+    first_name = 'Test first name'
+    last_name = 'Test last name'
+    role = 'user'
+    phone = 'Test phone'
+    employer = 'Test employer'
+    occupation = 'Test occupation'
+    experience = 'no_experience'
+    preferred_format = 'online'
+    consent_personal_data_processing = True
+    consent_personal_data_date = '2021-10-10 00:00:00'
+    consent_vacancy_data_processing = True
+    consent_vacancy_data_date = '2021-10-10 00:00:00'
+    consent_random_coffee = True
+    
+    is_active = True
+    is_staff = False
+    is_superuser = False
