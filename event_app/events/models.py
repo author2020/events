@@ -1,7 +1,30 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 
 from users.models import User
+
+
+class Photo(models.Model):
+    '''
+    Модель для фотографии.
+    '''
+
+    image = models.ImageField(
+        upload_to='events/photo/',
+        verbose_name='Фотография'
+    )
+    event = models.ForeignKey(
+        'Event',
+        on_delete=models.CASCADE,
+        related_name='photos',
+        verbose_name='Событие, к которому относится фотография'
+    )
+
+    class Meta:
+        verbose_name = 'Фотография'
+        verbose_name_plural = 'Фотографии'
+
+    def __str__(self):
+        return f'{self.event} - {self.image}'
 
 
 class Event(models.Model):
@@ -52,7 +75,9 @@ class Event(models.Model):
         verbose_name='Описание'
     )
     datetime = models.DateTimeField(
-        verbose_name='Дата и время начала'
+        verbose_name='Дата и время начала',
+        blank=True,
+        null=True
     )
     format = models.CharField(
         max_length=20,

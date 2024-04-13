@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.core.validators import RegexValidator
 
-from events.models import Event, EventRegistration, Speaker, Subevent
+from events.models import Event, EventRegistration, Photo, Speaker, Subevent
 
 
 class SpeakerSerializer(serializers.ModelSerializer):
@@ -42,6 +42,15 @@ class SubeventSerializer(serializers.ModelSerializer):
         model = Subevent
 
 
+class PhotoSerializer(serializers.ModelSerializer):
+    '''
+    Сериализатор для фото.
+    '''
+    class Meta:
+        model = Photo
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
     '''
     Сериализатор для мероприятия.
@@ -51,6 +60,7 @@ class EventSerializer(serializers.ModelSerializer):
     my_participation = serializers.SerializerMethodField()
     registration_status = serializers.SerializerMethodField()
     format = serializers.SerializerMethodField()
+    photos = PhotoSerializer(many=True, read_only=True)
 
 
     class Meta:
