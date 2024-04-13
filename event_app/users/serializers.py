@@ -6,7 +6,6 @@ from rest_framework.validators import UniqueValidator
 
 from .models import User, Specialization
 from events.models import EventRegistration
-from api.serializers import EventRegistrationSerializer
 
 
 class SpecializationSerializer(serializers.ModelSerializer):
@@ -62,14 +61,3 @@ class CustomUserSerializer(UserSerializer):
             instance.specialization.clear()
             instance.specialization.set(validated_data.pop('specialization'))
         return super().update(instance, validated_data)
-    
-    def create(self, validated_data):
-        if 'consent_personal_data_processing' in validated_data:
-            validated_data['consent_personal_data_date'] = datetime.now()
-        if 'consent_vacancy_data_processing' in validated_data:
-            validated_data['consent_vacancy_data_date'] = datetime.now()
-        user = User.objects.create_user(**validated_data)
-        if 'specialization' in validated_data:
-            user.specialization.set(validated_data.pop('specialization'))
-        return user
-    
