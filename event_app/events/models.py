@@ -10,21 +10,26 @@ class Photo(models.Model):
 
     image = models.ImageField(
         upload_to='events/photo/',
-        verbose_name='Фотография'
+        verbose_name='Фотография',
+        blank=False,
+        null=False
     )
     event = models.ForeignKey(
         'Event',
         on_delete=models.CASCADE,
         related_name='photos',
-        verbose_name='Событие, к которому относится фотография'
+        verbose_name='Событие, к которому относится фотография',
+        null=False,
+        blank=False
     )
+    added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Фотография'
         verbose_name_plural = 'Фотографии'
 
     def __str__(self):
-        return f'{self.event} - {self.image}'
+        return f'{self.event.title} - {self.image.name}'
 
 
 class Event(models.Model):

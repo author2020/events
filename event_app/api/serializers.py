@@ -94,6 +94,7 @@ class EventRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventRegistration
         fields = '__all__'
+        read_only_fields = ['approved']
 
     def create(self, validated_data):
         current_count = EventRegistration.objects.filter(event=validated_data['event']).count()
@@ -105,5 +106,5 @@ class EventRegistrationSerializer(serializers.ModelSerializer):
         event_id = self.context['view'].kwargs.get('event_id')
         user = self.context['request'].user
         if EventRegistration.objects.filter(event=event_id, participant=user).exists():
-            raise serializers.ValidationError('Вы уже зарегистрированы на это мероприятие')
+            raise serializers.ValidationError('Вы уже зарегистрированы на это событие')
         return super().validate(attrs)
