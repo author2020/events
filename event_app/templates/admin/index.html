@@ -2,17 +2,17 @@
 {% load i18n static %}
 {% load admin_menu %}
 
-{% block extrastyle %}
+{% comment %} {% block extrastyle %}
 {{ block.super }}
 <!-- <link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}" /> -->
-{% endblock %}
+{% endblock %} {% endcomment %}
 
-{% block coltype %}colMS{% endblock %}
+{% comment %} {% block coltype %}colMS{% endblock %} {% endcomment %}
 
 {% block bodyclass %}{{ block.super }} dashboard{% endblock %}
 {% if not is_popup %}
 {% block breadcrumbs %}
-<div class="row mb-2">
+{% comment %} <div class="row mb-2">
     <div class="col-sm-4">
         <h2>{{title}}</h2>
     </div>
@@ -24,7 +24,7 @@
             {% endfor %}
         </ol>
     </div>
-</div>
+</div> {% endcomment %}
 {% endblock %}
 {% endif %}
 
