@@ -18,9 +18,9 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_DB: event_db
-          POSTGRES_USER: event_user
-          POSTGRES_PASSWORD: event_password
+          POSTGRES_DB: events_db
+          POSTGRES_USER: events_user
+          POSTGRES_PASSWORD: events_password
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
