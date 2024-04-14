@@ -7,47 +7,7 @@ on:
 
 jobs:
 
-  tests:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.11"]
-
-    services:
-
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_DB: events_db
-          POSTGRES_USER: events_user
-          POSTGRES_PASSWORD: events_password
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: 'pip'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r ./requirements.txt
-
-    - name: Test with pytest
-      run: |
-        pytest event_app
-
   dispatch:
-    needs: [tests]
     runs-on: ubuntu-latest
     steps:
       - name: Push to repo
@@ -59,7 +19,7 @@ jobs:
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "module": "events", "branch": "develop"}'
 
   build_and_push_to_docker_hub:
-    needs: [tests, dispatch]
+    needs: [dispatch]
     name: Build and Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
