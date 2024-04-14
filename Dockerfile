@@ -25,7 +25,8 @@ COPY ./event_app .
 RUN  mkdir static media \
     && chown -R backend_user:backend_user $APP_HOME
 
+RUN  sed -i 's/\r$//' ./entrypoint.sh && chmod +x ./entrypoint.sh
+
 USER backend_user
 
-RUN  sed -i 's/\r$//' ./entrypoint.sh && chmod +x ./entrypoint.sh
 ENTRYPOINT  ["./entrypoint.sh"]

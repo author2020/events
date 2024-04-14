@@ -62,8 +62,10 @@ class EventRegistrationViewSet(viewsets.ModelViewSet):
     pagination_class = CustomUserPagination
     permission_classes = (IsAuthenticated,)
 
-    def get_queryset(self): # add view only for current user or admins?
-        return EventRegistration.objects.filter(event_id=self.kwargs.get('event_id'))
+    def get_queryset(self):
+        if self.request.user.is_admin:
+            return EventRegistration.objects.filter(event_id=self.kwargs.get('event_id'))
+        return EventRegistration.objects.filter(participant=self.request.user, event_id=self.kwargs.get('event_id'))
     
     def perform_create(self, serializer):
         if not self.request.user.profile_full:

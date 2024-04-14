@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+from django.core.validators import RegexValidator
 
-from events.models import Event, EventRegistration, Speaker, Subevent
+from events.models import Event, EventRegistration, Photo, Speaker, Subevent
 
 
 class SpeakerSerializer(serializers.ModelSerializer):
@@ -9,6 +11,16 @@ class SpeakerSerializer(serializers.ModelSerializer):
     '''
     subevent = serializers.StringRelatedField(many=True, read_only=True)
     full_name = serializers.SerializerMethodField()
+    first_name = serializers.CharField(validators=[RegexValidator(
+        regex=r'^[a-zA-Zа-яА-Я]+$',
+        message='Имя может содержать только русские либо латинские буквы!')])
+    last_name = serializers.CharField(validators=[RegexValidator(
+        regex=r'^[a-zA-Zа-яА-Я\-]+$',
+        message='Фамилия может содержать только русские либо латинские'
+                ' буквы, а также тире!')])
+    contacts = serializers.CharField(
+        validators=[UniqueValidator(queryset=Speaker.objects.all())]
+    )
 
     class Meta:
         model = Speaker
@@ -30,20 +42,47 @@ class SubeventSerializer(serializers.ModelSerializer):
         model = Subevent
 
 
+class PhotoSerializer(serializers.ModelSerializer):
+    '''
+    Сериализатор для фото.
+    '''
+    class Meta:
+        model = Photo
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
     '''
     Сериализатор для мероприятия.
     '''
     subevents = SubeventSerializer(many=True, read_only=True)
-    # participants = serializers.StringRelatedField(many=True, read_only=True)
     participant_count = serializers.SerializerMethodField()
+    my_participation = serializers.SerializerMethodField()
+    registration_status = serializers.SerializerMethodField()
+    format = serializers.SerializerMethodField()
+    photos = PhotoSerializer(many=True, read_only=True)
+
 
     class Meta:
         model = Event
-        fields = '__all__'
+        exclude = ['participants']
+
+    def get_registration_status(self, obj):
+        return obj.get_registration_status_display()
+    
+    def get_format(self, obj):
+        return obj.get_format_display()
+        
 
     def get_participant_count(self, obj):
         return obj.registrations.count()
+    
+    def get_my_participation(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            return EventRegistration.objects.filter(event=obj, participant=user).exists()
+        return "Not authenticated"
+
 
 class EventRegistrationSerializer(serializers.ModelSerializer):
     '''
@@ -55,6 +94,7 @@ class EventRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventRegistration
         fields = '__all__'
+        read_only_fields = ['approved']
 
     def create(self, validated_data):
         current_count = EventRegistration.objects.filter(event=validated_data['event']).count()
@@ -66,5 +106,5 @@ class EventRegistrationSerializer(serializers.ModelSerializer):
         event_id = self.context['view'].kwargs.get('event_id')
         user = self.context['request'].user
         if EventRegistration.objects.filter(event=event_id, participant=user).exists():
-            raise serializers.ValidationError('Вы уже зарегистрированы на это мероприятие')
+            raise serializers.ValidationError('Вы уже зарегистрированы на это событие')
         return super().validate(attrs)
