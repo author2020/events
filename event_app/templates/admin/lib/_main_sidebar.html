@@ -1,12 +1,12 @@
 {% load adminlte_helpers %}
 {%load static %}
 <!-- Left side column. contains the sidebar -->
-<aside class="main-sidebar sidebar-light elevation-2">
+<aside class="main-sidebar sidebar-light elevation-0">
      <!-- Brand Logo -->
     {% comment %} {% block logo %} {% endcomment %}
         <a href="/" class="brand-link">
             {% comment %} <img src="{%static 'admin-lte/dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> {% endcomment %}
-            {% block logo_text %}<span class="brand-text font-weight-light">ЯНДЕКС СОБЫТИЯ</span>{% endblock %}
+            {% block logo_text %}<span class="brand-text font-weight text-center" style="display: block;">ЯНДЕКС СОБЫТИЯ</span>{% endblock %}
         </a>
     {% comment %} {% endblock %} {% endcomment %}
     <!-- sidebar: style can be found in sidebar.less -->
@@ -35,21 +35,21 @@
 
             {% block nav_links %}
                 <li class="nav-item">
-                    <a href="/admin/" class="nav-link active">
-                      <i class="nav-icon fas fa-tachometer-alt"></i> 
-                      <p>ГЛАВНАЯ</p>
+                    <a href="/admin/" class="nav-link active" style="text-align: center; display: block;">
+                      <i class="nav-icon fas fa-home"></i> 
+                      <p style="color: black;">ГЛАВНАЯ</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/events/" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i> 
-                        <p>СОБЫТИЯ</p>
+                    <a href="/admin/events/" class="nav-link" style="text-align: center; display: block;">
+                        <i class="nav-icon fas fa-calendar-alt"></i> 
+                        <p style="color: black;">СОБЫТИЯ</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                        <a href="/admin/users/" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i> 
-                            <p>УЧАСТНИКИ</p>
+                        <a href="/admin/users/" class="nav-link active" style="text-align: center; display: block;">
+                            <i class="nav-icon fas fa-users"></i> 
+                            <p style="color: black;">УЧАСТНИКИ</p>
                         </a>
                 </li>
                 {% comment %} <li class="nav-item has-tree-view ">

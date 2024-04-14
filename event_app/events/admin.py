@@ -10,7 +10,7 @@ class EventRegistrationInline(admin.options.InlineModelAdmin):
 
 
 @admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
+class Admin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
