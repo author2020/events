@@ -59,7 +59,7 @@
         <div class="module-right{% if cl.has_filters %} filtered{% endif %}" id="changelist">
             <div class="row p-1">
             
-            {% comment %} {% block search %}{% search_form cl %}{% endblock %} {% endcomment %}
+            {% block search %}{% search_form cl %}{% endblock %}
             <!--  -->
             {% block object-tools %}
             <div class="d-grid gap-2 col-12 mx-auto{% if cl.has_filters %}4{% else %}4{% endif %}">
