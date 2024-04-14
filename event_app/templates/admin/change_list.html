@@ -30,7 +30,7 @@
 
 {% if not is_popup %}
     {% block breadcrumbs %}
-    <div class="row mb-2">
+    {% comment %} <div class="row mb-2">
         <div class="col-sm-6">
             <h2>{{title}}</h2>
         </div>
@@ -41,7 +41,7 @@
                 <li class="breadcrumb-item active">{{ cl.opts.verbose_name_plural|capfirst }}</li>  
             </ol>
         </div>
-    </div>    
+    </div>     {% endcomment %}
     {% endblock %}
 {% endif %}
 

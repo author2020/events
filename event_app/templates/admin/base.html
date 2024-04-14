@@ -25,16 +25,16 @@
 {% endblock %}
 
 {% block content_header %}
-<section class="content-header">
+{% comment %} <section class="content-header">
     <div class="container-fluid">
         {% block breadcrumbs %}
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'admin:index' %}"><i class="fas fa-tachometer-alt"></i> {% trans 'Home' %}</a></li>
-            {% if title %}  {{ title }}{% endif %}
+            {% if title %} {{ title }} {% endif %}
         </ol>
         {% endblock %}
     </div>
-</section>
+</section> {% endcomment %}
 
 {% endblock %}
 

@@ -16,8 +16,8 @@
 {% if not is_popup %}
 {% block breadcrumbs %}
 
-<div class="row mb-2">
-    <div class="col-sm-4">
+<div class="row mb-4">
+    {% comment %} <div class="col-sm-4">
         <h2>{{title}}</h2>
     </div>
     <div class="col-sm-8">
@@ -35,7 +35,7 @@
             <li class="breadcrumb-item active">{% if add %}{% blocktrans with name=opts.verbose_name %}Add
                 {{ name }}{% endblocktrans %}{% else %}{{ original|truncatewords:"18" }}{% endif %}</li>
         </ol>
-    </div>
+    </div> {% endcomment %}
 </div>
 {% endblock %}
 {% endif %}
