@@ -33,7 +33,7 @@ class EventAdmin(admin.ModelAdmin):
         ('Программа события', {
             'classes': ('collapse', 'wide'),
             'fields': ('host_full_name', 'host_contacts', 'host_company',
-                       'host_position', 'host_photo', ('subevent',))
+                       'host_position', 'host_photo')
         }),
         ('Ссылки события', {
             'classes': ('collapse', 'wide'),
