@@ -13,6 +13,22 @@ jobs:
       matrix:
         python-version: ["3.11"]
 
+    services:
+
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: event_db
+          POSTGRES_USER: event_user
+          POSTGRES_PASSWORD: event_password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
