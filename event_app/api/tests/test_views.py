@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 
-from .fixtures import EventFactory, SpeakerFactory, SubeventFactory, UserFactory
-from events.models import Event, EventRegistration, Speaker, Subevent
+from .fixtures import EventFactory, SpeakerFactory, SubeventFactory, UserFactory, request_user_token
+from events.models import Event, EventRegistration, Speaker
 from users.models import User
 
 
@@ -128,18 +128,9 @@ class EventRegistrationViewTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.notparticipant_token = self.client.post('/api/v1/auth/token/login/',
-                                                     {"email": "notparticipant@example.com",
-                                                     "password": "usertestpasSW1#"}
-                                                     ).json()['auth_token']
-        self.participant_token = self.client.post('/api/v1/auth/token/login/',
-                                                  {"email": "participant@example.com",
-                                                  "password": "usertestpasSW1#"}
-                                                  ).json()['auth_token']
-        self.admin_token = self.client.post('/api/v1/auth/token/login/',
-                                            {"email": "adminuser@example.com",
-                                            "password": "usertestpasSW1#"}
-                                            ).json()['auth_token']
+        self.notparticipant_token = request_user_token(self.client, 'notparticipant@example.com')
+        self.participant_token = request_user_token(self.client, 'participant@example.com')
+        self.admin_token = request_user_token(self.client, 'adminuser@example.com')
 
     def test_event_registration_list_authorizing(self):
         response = self.client.get('/api/v1/events/1/registrations/')
@@ -164,10 +155,7 @@ class EventRegistrationViewTestCase(TestCase):
 
     def test_event_registration_create_fail_not_full_profile(self):
         User.objects.create_user(email="notfulldata@example.com", password="usertestpasSW1#", is_active=True)
-        user_token = self.client.post('/api/v1/auth/token/login/',
-                                      {"email": "notfulldata@example.com",
-                                      "password": "usertestpasSW1#"}
-                                      ).json()['auth_token']
+        user_token = request_user_token(self.client, 'notfulldata@example.com')
         response = self.client.post('/api/v1/events/1/registrations/', HTTP_AUTHORIZATION=f'Token {user_token}')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()[0], 'Заполните все поля профиля')

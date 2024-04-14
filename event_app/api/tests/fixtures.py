@@ -4,6 +4,14 @@ from events.models import Event, Speaker, Subevent
 from users.models import User
 
 
+def request_user_token(client, email):
+    user_token = client.post('/api/v1/auth/token/login/',
+                             {"email": email,
+                             "password": "usertestpasSW1#"}
+                             ).json()['auth_token']
+    return user_token
+
+
 class EventFactory(DjangoModelFactory):
     class Meta:
         model = Event
