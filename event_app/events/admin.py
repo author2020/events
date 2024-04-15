@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Event, EventRegistration, Speaker, Subevent
+from .models import Event, EventRegistration, Photo, Speaker, Subevent
 
 
 class EventRegistrationInline(admin.options.InlineModelAdmin):
@@ -8,9 +8,14 @@ class EventRegistrationInline(admin.options.InlineModelAdmin):
     model = EventRegistration
     extra = 0
 
+class PhotoInline(admin.options.InlineModelAdmin):
+    template = 'admin/edit_inline/yandex_events_inline.html'
+    model = Photo
+    extra = 0
+
 
 @admin.register(Event)
-class Admin(admin.ModelAdmin):
+class EventAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
@@ -45,7 +50,7 @@ class Admin(admin.ModelAdmin):
         }),
     )
     list_display_links = ('title',)
-    inlines = (EventRegistrationInline,)
+    inlines = (PhotoInline, EventRegistrationInline,)
 
     @admin.display(description='Зарегистрированные участники')
     def registered(self, obj):
@@ -57,6 +62,7 @@ class SubeventAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'title',
+        'event',
         'time',
     )
     list_filter = (
@@ -108,4 +114,21 @@ class EventRegistrationAdmin(admin.ModelAdmin):
         'participant__email'
     )
     list_display_links = ('participant',)
+    ordering = ('id',)
+
+
+@admin.register(Photo)
+class PhotoAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'image',
+        'event',
+    )
+    list_filter = (
+        'event',
+    )
+    search_fields = (
+        'event__title',
+    )
+    list_display_links = ('image',)
     ordering = ('id',)
