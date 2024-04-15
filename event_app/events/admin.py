@@ -64,7 +64,7 @@ class SubeventAdmin(admin.ModelAdmin):
         'speaker',
         'time'
     )
-    fields = ('title', 'time', 'event', 'speaker')
+    fields = ('title', 'time', 'speaker')
     list_display_links = ('title',)
     ordering = ('id',)
 
