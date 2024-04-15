@@ -1,4 +1,4 @@
-name: Event backend deploy
+name: Event tests
 
 on:
   push:
