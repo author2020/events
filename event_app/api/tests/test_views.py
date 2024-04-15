@@ -29,8 +29,8 @@ class TestEventViewTestCase(TestCase):
         self.assertEqual(len(response.json()['results']), 2)
         self.assertEqual(response.json()['results'][0]['title'], 'Test event future 1')
         self.assertEqual(response.json()['results'][1]['title'], 'Test event future 2')
-        self.assertEqual(response.json()['results'][0]['event_status'], 'on_time')
-        self.assertEqual(response.json()['results'][1]['event_status'], 'on_time')
+        self.assertEqual(response.json()['results'][0]['event_status'], 'По расписанию')
+        self.assertEqual(response.json()['results'][1]['event_status'], 'По расписанию')
         self.assertLessEqual(response.json()['results'][0]['datetime'],
                                 response.json()['results'][1]['datetime'])
 
@@ -40,8 +40,8 @@ class TestEventViewTestCase(TestCase):
         self.assertEqual(len(response.json()['results']), 2)
         self.assertEqual(response.json()['results'][0]['title'], 'Test event past 2')
         self.assertEqual(response.json()['results'][1]['title'], 'Test event past 1')
-        self.assertEqual(response.json()['results'][0]['event_status'], 'on_time')
-        self.assertEqual(response.json()['results'][1]['event_status'], 'on_time')
+        self.assertEqual(response.json()['results'][0]['event_status'], 'По расписанию')
+        self.assertEqual(response.json()['results'][1]['event_status'], 'По расписанию')
         self.assertGreaterEqual(response.json()['results'][0]['datetime'],
                                 response.json()['results'][1]['datetime'])
 
@@ -50,14 +50,14 @@ class TestEventViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['results']), 1)
         self.assertEqual(response.json()['results'][0]['title'], 'Test event scheduled')
-        self.assertEqual(response.json()['results'][0]['event_status'], 'scheduled')
+        self.assertEqual(response.json()['results'][0]['event_status'], 'Запланировано')
 
     def test_event_list_url_canceled(self):
         response = self.client.get('/api/v1/events/?status=canceled')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['results']), 1)
         self.assertEqual(response.json()['results'][0]['title'], 'Test event canceled')
-        self.assertEqual(response.json()['results'][0]['event_status'], 'canceled')
+        self.assertEqual(response.json()['results'][0]['event_status'], 'Отменено')
 
 
 class TestSubeventViewTestCase(TestCase):
