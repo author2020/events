@@ -18,8 +18,8 @@
 
 
 ## II. Ссылка на Swagger
--http://funtech.b2k.me/api/v1/swagger/
--http://funtech.b2k.me/api/v1/redoc/
+*http://funtech.b2k.me/api/v1/swagger/
+*http://funtech.b2k.me/api/v1/redoc/
 ## III. Инструкция по сборке и запуску
 ![GitHub repo size](https://img.shields.io/github/repo-size/StAndUP-ru/events)
 ![Static Badge](https://img.shields.io/badge/test_coverage-95%25-FFDF00)
