@@ -23,7 +23,8 @@ https://app.swaggerhub.com/apis/PETROGRADKA_1/event-funtech/v1#/
 ![GitHub repo size](https://img.shields.io/github/repo-size/StAndUP-ru/events)
 ![Static Badge](https://img.shields.io/badge/test_coverage-95%25-FCE000)
 ![GitHub language count](https://img.shields.io/github/languages/count/StAndUP-ru/events)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/StAndUP-ru/events?labelColor=FCE000&color=A89500)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/StAndUP-ru/events?labelColor=FC5230&color=FCE000)
+
 
 
 
