@@ -22,7 +22,7 @@
 *http://funtech.b2k.me/api/v1/redoc/
 ## III. Инструкция по сборке и запуску
 ![GitHub repo size](https://img.shields.io/github/repo-size/StAndUP-ru/events)
-![Static Badge](https://img.shields.io/badge/test_coverage-95%25-FFDF00)
+![Static Badge](https://img.shields.io/badge/test_coverage-95%25-FCE000)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/StAndUP-ru/events)
 
 ### Клонирование
@@ -53,7 +53,9 @@ pip install -r requirements.txt
 В директории events_app скопировать файл `.env.example` в `.env` и задать значения переменным
 
 ### Сборка в Docker
-
+```sh
+docker pull standup1990/event
+```
 ## IV. Cтэк технологий 
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
@@ -64,16 +66,8 @@ pip install -r requirements.txt
 [![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
 ## V. Cсылки на сторонние фреймворки, библиотеки, иконки и шрифты если использовались
 
-
-![Иллюстрация к проекту](https://github.com/author2020/events/blob/sa/image2.png)
-
-
-## Docker
-
-```sh
-docker pull standup1990/event
-```
-
 ## License
 
 MIT
+
+![Иллюстрация к проекту](https://github.com/author2020/events/blob/sa/image2.png)
