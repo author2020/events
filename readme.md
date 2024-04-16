@@ -16,11 +16,12 @@
 | Backend Developer | Станислав Андрющенко | https://t.me/StAndSt
 | Backend Developer | Дмитрий Печенков | https://t.me/imperatorObi1Kenobi
 
+![GitHub repo size](https://img.shields.io/github/repo-size/StAndUP-ru/events)
 ![Static Badge](https://img.shields.io/badge/test_coverage-95%25-FFDF00)
 
 ## II. Ссылка на Swagger
-http://funtech.b2k.me/api/v1/swagger/
-http://funtech.b2k.me/api/v1/redoc/
+-http://funtech.b2k.me/api/v1/swagger/
+-http://funtech.b2k.me/api/v1/redoc/
 ## III. Инструкция по сборке и запуску
 https://img.shields.io/github/commit-activity/:w/:StAndUP-ru/:events
 ### Клонирование
