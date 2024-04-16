@@ -1,4 +1,3 @@
-readme.md для бэкенд
 # Веб-приложение для Funtech
 ## I. Сведения о команде
 
@@ -16,11 +15,12 @@ readme.md для бэкенд
 | Backend Developer | Сергей Барышевский  | https://t.me/Rexten
 | Backend Developer | Станислав Андрющенко | https://t.me/StAndSt
 | Backend Developer | Дмитрий Печенков | https://t.me/imperatorObi1Kenobi
-![Static Badge](https://img.shields.io/badge/test_coverage-95%-FFDF00)
 
+![Static Badge](https://img.shields.io/badge/test_coverage-95%25-FFDF00)
 
 ## II. Ссылка на Swagger
 http://funtech.b2k.me/api/v1/swagger/
+http://funtech.b2k.me/api/v1/redoc/
 ## III. Инструкция по сборке и запуску
 https://img.shields.io/github/commit-activity/:w/:StAndUP-ru/:events
 ### Клонирование
@@ -63,7 +63,7 @@ pip install -r requirements.txt
 ## V. Cсылки на сторонние фреймворки, библиотеки, иконки и шрифты если использовались
 
 
-![Иллюстрация к проекту](https://github.com/jon/coolproject/raw/master/image/image.png)
+![Иллюстрация к проекту](https://github.com/jon/coolproject/raw/master/image/image.png https://github.com/author2020/events/edit/sa/readme.md#L1C0)
 
 ## Docker
 
