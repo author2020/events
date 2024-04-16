@@ -67,6 +67,7 @@ pip install -r requirements.txt
 
 ![Иллюстрация к проекту](https://github.com/author2020/events/image1.png)
 
+
 ## Docker
 
 ```sh
