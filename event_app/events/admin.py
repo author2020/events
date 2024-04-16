@@ -1,6 +1,4 @@
 from django.contrib import admin
-from django.http import HttpRequest
-from django.template.response import TemplateResponse
 
 from .models import Event, EventRegistration, Photo, Speaker, Subevent
 
