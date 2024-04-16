@@ -65,7 +65,7 @@ pip install -r requirements.txt
 ## V. Cсылки на сторонние фреймворки, библиотеки, иконки и шрифты если использовались
 
 
-![Иллюстрация к проекту](https://github.com/author2020/events/image1.png)
+![Иллюстрация к проекту](https://github.com/author2020/events/blob/sa/image1.png)
 
 
 ## Docker
