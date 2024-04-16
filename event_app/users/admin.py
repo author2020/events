@@ -36,7 +36,7 @@ class UserAdmin(DefaultUserAdmin):
     def full_name(self, obj):
         return f"{obj.first_name} {obj.last_name}"
 
-    @admin.display(description='Регистрации')
+    @admin.display(description='Кол-во мероприятий')
     def registrations(self, obj):
         return obj.registrations.count()
     
