@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.http import HttpRequest
+from django.template.response import TemplateResponse
 
 from .models import Event, EventRegistration, Photo, Speaker, Subevent
 
@@ -28,12 +30,16 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ('title__startswith',)
     ordering = ('id',)  
     fieldsets = (
-        (None, {'fields': ('title', 'event_status')}),
+        ('Событие', {'fields': ('title', 'event_status')}),
         ('О событии', {
             'classes': ('collapse', 'wide'),
             'fields': (('organizer_name', 'organizer_contacts'),
                        ('registration_status', 'description'),
                        ('datetime', 'format', 'participant_limit'), 'image')
+        }),
+        ('Место проведения', {
+            'classes': ('collapse', 'wide'),
+            'fields': ('location_address', 'location_coordinates')
         }),
         ('Программа события', {
             'classes': ('collapse', 'wide'),
@@ -70,7 +76,9 @@ class SubeventAdmin(admin.ModelAdmin):
         'speaker',
         'time'
     )
-    fields = ('title', 'time', 'event', 'speaker')
+    fieldsets = (
+        ('Темы события', {'fields': ('title', 'time', 'event', 'speaker')}),
+    )
     list_display_links = ('title',)
     ordering = ('id',)
 
@@ -89,8 +97,9 @@ class SpeakerAdmin(admin.ModelAdmin):
         'company',
         'position'
     )
-    fields = (
-        'photo', ('first_name', 'last_name', 'contacts'), ('company', 'position',)
+    fieldsets = (
+        ('Спикер', {'fields': ('photo', ('first_name', 'last_name', 'contacts'),
+                                ('company', 'position'))}),
     )
     list_display_links = ('full_name',)
     ordering = ('id',)
@@ -113,6 +122,9 @@ class EventRegistrationAdmin(admin.ModelAdmin):
         'event__title',
         'participant__email'
     )
+    fieldsets = (
+        ('Регистрация', {'fields': ('event', 'participant', 'approved')}),
+    )
     list_display_links = ('participant',)
     ordering = ('id',)
 
@@ -129,6 +141,9 @@ class PhotoAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'event__title',
+    )
+    fieldsets = (
+        ('Фотография', {'fields': ('image', 'event')}),
     )
     list_display_links = ('image',)
     ordering = ('id',)
