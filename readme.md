@@ -65,7 +65,7 @@ pip install -r requirements.txt
 ## V. Cсылки на сторонние фреймворки, библиотеки, иконки и шрифты если использовались
 
 
-![Иллюстрация к проекту](https://github.com/jon/coolproject/raw/master/image/image.png https://github.com/author2020/events/edit/sa/readme.md#L1C0)
+![Иллюстрация к проекту](https://github.com/jon/coolproject/raw/master/image/image.png https://github.com/author2020/events/image1.png)
 
 ## Docker
 
