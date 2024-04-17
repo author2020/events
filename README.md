@@ -3,6 +3,7 @@
 ![Static Badge](https://img.shields.io/badge/test_coverage-92%25-F) 
 ![GitHub language count](https://img.shields.io/github/languages/count/StAndUP-ru/events)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/StAndUP-ru/events)
+  
 Единая платформа для IT-специалистов, где они смогут легко находить и регистрироваться на мероприятия, обмениваться знаниями и устанавливать профессиональные связи
 ## I. Сведения о команде
 
@@ -104,6 +105,7 @@ docker compose up
 - [SASS] - Extended CSS Preprocessor
 - [Mobx] - State management
 - [ReactHookForm] - Инструмент создания и валидации форм для React
+  
 - [Gunicorn] - WSGI Server для Django
 - [Celery] = Менеджер очередей
 - [Redis] - Брокер сообщений и хранилище данных
