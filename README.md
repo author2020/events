@@ -105,7 +105,6 @@ docker compose up
 - [SASS] - Extended CSS Preprocessor
 - [Mobx] - State management
 - [ReactHookForm] - Инструмент создания и валидации форм для React
-  
 - [Gunicorn] - WSGI Server для Django
 - [Celery] = Менеджер очередей
 - [Redis] - Брокер сообщений и хранилище данных
